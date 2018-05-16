@@ -6,6 +6,11 @@ if [[ "$EUID" -ne 0 ]]; then
 fi
 
 read -p "Client name: " -e -i newclient CLIENT
+read -p "Password: " -e -i password PASSWORD
+
+# Create user
+useradd -s `which nologin` -p $(echo $PASSWORD | openssl passwd -1 -stdin) $CLIENT
+
 cd /etc/openvpn/easy-rsa/
 ./easyrsa build-client-full $CLIENT nopass
 
@@ -19,4 +24,4 @@ echo "</cert>" >> /root/$CLIENT.ovpn
 echo "<key>" >> /root/$CLIENT.ovpn
 cat /etc/openvpn/easy-rsa/pki/private/$CLIENT.key >> /root/$CLIENT.ovpn
 echo "</key>" >> /root/$CLIENT.ovpn
-echo "key-direction 1" >> /root/$CLIENT.ovpn
+echo "key-direction 1" >> /root/$CLIENT.ovp
