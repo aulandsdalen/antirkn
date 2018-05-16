@@ -24,4 +24,4 @@ echo "</cert>" >> /root/$CLIENT.ovpn
 echo "<key>" >> /root/$CLIENT.ovpn
 cat /etc/openvpn/easy-rsa/pki/private/$CLIENT.key >> /root/$CLIENT.ovpn
 echo "</key>" >> /root/$CLIENT.ovpn
-echo "key-direction 1" >> /root/$CLIENT.ovp
+echo "key-direction 1" >> /root/$CLIENT.ovpn
