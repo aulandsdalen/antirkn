@@ -19,6 +19,7 @@ DH_KEY_SIZE=4096
 CLIENT="shortcut"
 SYSCTL='/etc/sysctl.conf'
 IP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
+NIC=$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)
 
 
 echo "Installing OpenVPN and dependencies..."
@@ -131,7 +132,7 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 # Set NAT for the VPN subnet
 iptables -t nat -A POSTROUTING -o $NIC -s 10.8.0.0/24 -j MASQUERADE
 # Save persitent iptables rules
-iptables-save > $IPTABLES
+iptables-save > /etc/iptables/iptables.rules
 
 if pgrep systemd-journal; then
 		#Workaround to fix OpenVPN service on OpenVZ
